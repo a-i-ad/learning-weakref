@@ -23,6 +23,7 @@ public class WeakHashMapDemo {
 
         // -- now make someDataObject elligible for garbage collection...
         someDataObject = null;
+        someDataObject2 = null;
 
         for (int i = 0; i < 10000; i++) {
             if (weakmap.size() != 0) {

@@ -1,5 +1,6 @@
 package com.aiad.learning.weakref;
 
+import java.util.HashMap;
 import java.util.WeakHashMap;
 
 /**
@@ -10,19 +11,24 @@ import java.util.WeakHashMap;
 public class WeakHashMapDemo {
     public static void main(String[] args) throws Exception {
         // -- Fill a weak hash map with one entry
-        WeakHashMap<Data, String> map = new WeakHashMap<Data, String>();
+        WeakHashMap<Data, String> weakmap = new WeakHashMap<>();
+        HashMap<Data, String> hashmap = new HashMap<>();
         Data someDataObject = new Data("foo");
-        map.put(someDataObject, someDataObject.value);
-        System.out.println("map contains someDataObject ? " + map.containsKey(someDataObject));
+        Data someDataObject2 = new Data("bar");
+
+        weakmap.put(someDataObject, someDataObject.value);
+        hashmap.put(someDataObject2, someDataObject2.value);
+        System.out.println("weakmap contains someDataObject  ? " + weakmap.containsKey(someDataObject));
+        System.out.println("hashmap contains someDataObject2 ? " + hashmap.containsKey(someDataObject2));
 
         // -- now make someDataObject elligible for garbage collection...
         someDataObject = null;
 
         for (int i = 0; i < 10000; i++) {
-            if (map.size() != 0) {
-                System.out.println("At iteration " + i + " the map still holds the reference on someDataObject");
+            if (weakmap.size() != 0) {
+                System.out.println("At iteration " + i + " the weakmap still holds the reference on someDataObject; hashmap has " + hashmap.size() + " entry");
             } else {
-                System.out.println("somDataObject has finally been garbage collected at iteration " + i + ", hence the map is now empty");
+                System.out.println("somDataObject has finally been garbage collected at iteration " + i + ", hence the weakmap is now empty; hashmap has " + hashmap.size() + " entry");
                 break;
             }
             // GCが早々に発生するようにメモリを無駄に消費
